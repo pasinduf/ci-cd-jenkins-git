@@ -12,21 +12,27 @@ This repository demonstrates how to implement **Continuous Integration (CI)** us
 
 ## Steps
 
-1. **Create a Jenkins job**
+1. **Generate API Token for access Jenkins**
+   - Jenkins Profile (top right) → Security → API Token → Generate Token
+   - Save API Token in Git repo secrets (Repo → Settings → Secrets → Actions → New repository secret)
+
+2. **Create a Jenkins job**
    - Pipeline type
    - Connect to Git repository
    - Enable Trigger type "Trigger builds remotely"
 
-2. **Add Jenkinsfile**
+3. **Add Jenkinsfile**
    - Build Docker image
    - Stop old container
    - Run new container
    - Inject environment variables from server file (ex: home/docker/api/.env)
 
-3. **Deployment**
+4. **Deployment**
    - Run container on VPS with specified port
 
 ## Notes
 
 - Ensure VPS has Docker installed
 - Use `.env` files securely
+- Save necessary secrets files in Git repo secrets (Repo → Settings → Secrets → Actions  → New repository secret) 
+  JENKINS_URL , JENKINS_USER , JENKINS_JOB, JENKINS_API_TOKEN
