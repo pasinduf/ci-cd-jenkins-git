@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test-and-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # Install
+      - name: Install dependencies
+        run: npm ci
+
+      # Run tests
+      - name: Run tests
+        run: npm test -- --ci --runInBand
+
+      # Trigger Jenkins ONLY if tests pass
+      - name: Trigger Jenkins Build
+        if: success()
+        run: |
+           CRUMB=$(curl -s "${{ secrets.JENKINS_URL }}/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)" \
+           --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}")
+
+           curl -X POST "${{ secrets.JENKINS_URL }}/job/${{ secrets.JENKINS_JOB }}/build" \
+           --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_API_TOKEN }}" \
+           -H "$CRUMB"
+
