@@ -34,5 +34,6 @@ This repository demonstrates how to implement **Continuous Integration (CI)** us
 
 - Ensure VPS has Docker installed
 - Use `.env` files securely
-- Save necessary secrets files in Git repo secrets (Repo → Settings → Secrets → Actions  → New repository secret) 
+- Save necessary secrets files in Git repo secrets (Repo → Settings → Secrets → Actions  → New repository secret)
+  
   JENKINS_URL , JENKINS_USER , JENKINS_JOB, JENKINS_API_TOKEN
